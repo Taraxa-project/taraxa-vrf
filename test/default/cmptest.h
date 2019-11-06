@@ -35,6 +35,8 @@
 
 int xmain(void);
 
+static unsigned char *guard_page;
+
 #ifdef BENCHMARKS
 
 # include <sys/time.h>
@@ -165,8 +167,9 @@ static FILE *fp_res;
 
 int main(void)
 {
-    FILE *fp_out;
-    int   c;
+    FILE          *fp_out;
+    unsigned char *_guard_page;
+    int           c;
 
     if ((fp_res = fopen(TEST_NAME_RES, "w+")) == NULL) {
         perror("fopen(" TEST_NAME_RES ")");
@@ -175,6 +178,11 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
+    if ((_guard_page = (unsigned char *) sodium_malloc(0)) == NULL) {
+        perror("sodium_malloc()");
+        return 99;
+    }
+    guard_page = _guard_page + 1;
     if (xmain() != 0) {
         return 99;
     }
@@ -188,6 +196,7 @@ int main(void)
             return 99;
         }
     } while (c != EOF);
+    sodium_free(_guard_page);
 
     return 0;
 }

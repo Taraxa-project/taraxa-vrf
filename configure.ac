@@ -1,5 +1,5 @@
 AC_PREREQ([2.65])
-AC_INIT([libsodium],[1.0.16],
+AC_INIT([libsodium],[1.0.17],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
   [https://github.com/jedisct1/libsodium])
@@ -13,13 +13,11 @@ AM_MAINTAINER_MODE
 AM_DEP_TRACK
 
 AC_SUBST(VERSION)
-ISODATE=`date +%Y-%m-%d`
-AC_SUBST(ISODATE)
 
 SODIUM_LIBRARY_VERSION_MAJOR=10
-SODIUM_LIBRARY_VERSION_MINOR=1
-DLL_VERSION=8
-SODIUM_LIBRARY_VERSION=24:0:1
+SODIUM_LIBRARY_VERSION_MINOR=2
+DLL_VERSION=23
+SODIUM_LIBRARY_VERSION=25:0:2
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
@@ -38,6 +36,7 @@ AC_SUBST(DLL_VERSION)
 
 AC_LANG_ASSERT(C)
 LX_CFLAGS=${CFLAGS-NONE}
+PKGCONFIG_LIBS_PRIVATE=""
 
 dnl Path check
 
@@ -129,6 +128,7 @@ AS_IF([test "x$withval" = "xyes"], [
     AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
     with_threads="yes"
     LIBS="$PTHREAD_LIBS $LIBS"
+    PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"])
 ], [with_threads="no"])
@@ -148,6 +148,17 @@ AC_ARG_WITH(ctgrind,
 [AS_HELP_STRING(--with-ctgrind,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [
     AC_CHECK_LIB(ctgrind, ct_poison)
+  ])
+])
+
+AC_ARG_ENABLE(retpoline,
+[AS_HELP_STRING(--enable-retpoline,Use return trampolines for indirect calls)],
+[AS_IF([test "x$enableval" = "xyes"], [
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk-inline],
+    [CFLAGS="$CFLAGS -mindirect-branch=thunk-inline"],
+    [AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])]
+  )
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch-register])
   ])
 ])
 
@@ -176,12 +187,15 @@ AC_ARG_ENABLE(opt,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
+    AX_CHECK_COMPILE_FLAG([-ftree-vectorize], [CFLAGS="$CFLAGS -ftree-vectorize"])
+    AX_CHECK_COMPILE_FLAG([-ftree-slp-vectorize], [CFLAGS="$CFLAGS -ftree-slp-vectorize"])
     AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer], [CFLAGS="$CFLAGS -fomit-frame-pointer"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
   ])
 ])
 
-AC_SUBST([MAINT])
+AC_SUBST(MAINT)
+AC_SUBST(PKGCONFIG_LIBS_PRIVATE)
 
 AX_VALGRIND_CHECK
 
@@ -198,12 +212,6 @@ AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
   AX_CHECK_COMPILE_FLAG([-D_FORTIFY_SOURCE=2],
     [CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"])
 ])
-
-AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk],
-  [CFLAGS="$CFLAGS -mindirect-branch=thunk"],
-  [
-    AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])
-  ])
 
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
@@ -330,24 +338,13 @@ AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
 
-AC_MSG_CHECKING(for a broken clang + AVX512 combination)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
-#if !(defined(__AVX512F__) && defined(__clang__) && __clang_major__ < 4)
-#error Not a broken clang + AVX512 combination
-#endif
-]])],
-  [AC_MSG_RESULT(yes - disabling AVX512 optimizations)
-   AX_CHECK_COMPILE_FLAG([$CFLAGS -mno-avx512f],
-     [CFLAGS="$CFLAGS -mno-avx512f"])
-  ],
-  [AC_MSG_RESULT(no)
-])
-
 AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
 
 AS_IF([test "x$with_threads" = "xyes"], [
-  AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+  AX_TLS([AC_MSG_RESULT(thread local storage is supported)
+          AX_CHECK_COMPILE_FLAG([-ftls-model=local-dynamic],
+            [CFLAGS="$CFLAGS -ftls-model=local-dynamic"])],
          [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
@@ -489,13 +486,29 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
 #pragma GCC target("avx512f")
 #include <immintrin.h>
 ]], [[
+
+#ifndef __AVX512F__
+# error No AVX512 support
+#elif defined(__clang__)
+# if __clang_major__ < 4
+#  error Compiler AVX512 support may be broken
+# endif
+#elif defined(__GNUC__)
+# if __GNUC__ < 6
+#  error Compiler AVX512 support may be broken
+# endif
+#endif
+
 __m512i x = _mm512_setzero_epi32();
 __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), x);
 ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_AVX512FINTRIN_H], [1], [AVX512F is available])
      AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS_AVX512F="-mavx512f"])],
-    [AC_MSG_RESULT(no)])
+    [AC_MSG_RESULT(no)
+     AX_CHECK_COMPILE_FLAG([$CFLAGS -mno-avx512f],
+       [CFLAGS="$CFLAGS -mno-avx512f"])
+    ])
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
