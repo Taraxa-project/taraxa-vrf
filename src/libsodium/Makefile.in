@@ -327,7 +327,12 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/sodium/verify.c \
+	crypto_verify/sodium/verify.c crypto_vrf/crypto_vrf.c \
+	crypto_vrf/ietfdraft03/keypair.c \
+	crypto_vrf/ietfdraft03/convert.c \
+	crypto_vrf/ietfdraft03/prove.c crypto_vrf/ietfdraft03/verify.c \
+	crypto_vrf/ietfdraft03/vrf.c \
+	crypto_vrf/ietfdraft03/vrf_ietfdraft03.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
@@ -473,6 +478,12 @@ am_libsodium_la_OBJECTS = crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_
 	crypto_stream/salsa20/libsodium_la-stream_salsa20.lo \
 	crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo \
 	crypto_verify/sodium/libsodium_la-verify.lo \
+	crypto_vrf/libsodium_la-crypto_vrf.lo \
+	crypto_vrf/ietfdraft03/libsodium_la-keypair.lo \
+	crypto_vrf/ietfdraft03/libsodium_la-convert.lo \
+	crypto_vrf/ietfdraft03/libsodium_la-prove.lo \
+	crypto_vrf/ietfdraft03/libsodium_la-verify.lo \
+	crypto_vrf/ietfdraft03/libsodium_la-vrf.lo \
 	randombytes/libsodium_la-randombytes.lo \
 	sodium/libsodium_la-codecs.lo sodium/libsodium_la-core.lo \
 	sodium/libsodium_la-runtime.lo sodium/libsodium_la-utils.lo \
@@ -630,6 +641,12 @@ am__depfiles_remade = crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes
 	crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo \
 	crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo \
 	crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo \
+	crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Plo \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Plo \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Plo \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Plo \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Plo \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Plo \
 	randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo \
 	randombytes/nativeclient/$(DEPDIR)/libsodium_la-randombytes_nativeclient.Plo \
 	randombytes/salsa20/$(DEPDIR)/librdrand_la-randombytes_salsa20_random.Plo \
@@ -984,7 +1001,12 @@ libsodium_la_SOURCES =  \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/sodium/verify.c \
+	crypto_verify/sodium/verify.c crypto_vrf/crypto_vrf.c \
+	crypto_vrf/ietfdraft03/keypair.c \
+	crypto_vrf/ietfdraft03/convert.c \
+	crypto_vrf/ietfdraft03/prove.c crypto_vrf/ietfdraft03/verify.c \
+	crypto_vrf/ietfdraft03/vrf.c \
+	crypto_vrf/ietfdraft03/vrf_ietfdraft03.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
@@ -1684,6 +1706,35 @@ crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp):
 crypto_verify/sodium/libsodium_la-verify.lo:  \
 	crypto_verify/sodium/$(am__dirstamp) \
 	crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/$(am__dirstamp):
+	@$(MKDIR_P) crypto_vrf
+	@: > crypto_vrf/$(am__dirstamp)
+crypto_vrf/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_vrf/$(DEPDIR)
+	@: > crypto_vrf/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/libsodium_la-crypto_vrf.lo: crypto_vrf/$(am__dirstamp) \
+	crypto_vrf/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/$(am__dirstamp):
+	@$(MKDIR_P) crypto_vrf/ietfdraft03
+	@: > crypto_vrf/ietfdraft03/$(am__dirstamp)
+crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_vrf/ietfdraft03/$(DEPDIR)
+	@: > crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/libsodium_la-keypair.lo:  \
+	crypto_vrf/ietfdraft03/$(am__dirstamp) \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/libsodium_la-convert.lo:  \
+	crypto_vrf/ietfdraft03/$(am__dirstamp) \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/libsodium_la-prove.lo:  \
+	crypto_vrf/ietfdraft03/$(am__dirstamp) \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/libsodium_la-verify.lo:  \
+	crypto_vrf/ietfdraft03/$(am__dirstamp) \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+crypto_vrf/ietfdraft03/libsodium_la-vrf.lo:  \
+	crypto_vrf/ietfdraft03/$(am__dirstamp) \
+	crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
 randombytes/$(am__dirstamp):
 	@$(MKDIR_P) randombytes
 	@: > randombytes/$(am__dirstamp)
@@ -2065,6 +2116,10 @@ mostlyclean-compile:
 	-rm -f crypto_stream/xsalsa20/*.lo
 	-rm -f crypto_verify/sodium/*.$(OBJEXT)
 	-rm -f crypto_verify/sodium/*.lo
+	-rm -f crypto_vrf/*.$(OBJEXT)
+	-rm -f crypto_vrf/*.lo
+	-rm -f crypto_vrf/ietfdraft03/*.$(OBJEXT)
+	-rm -f crypto_vrf/ietfdraft03/*.lo
 	-rm -f randombytes/*.$(OBJEXT)
 	-rm -f randombytes/*.lo
 	-rm -f randombytes/nativeclient/*.$(OBJEXT)
@@ -2177,6 +2232,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/nativeclient/$(DEPDIR)/libsodium_la-randombytes_nativeclient.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/salsa20/$(DEPDIR)/librdrand_la-randombytes_salsa20_random.Plo@am__quote@ # am--include-marker
@@ -2724,6 +2785,48 @@ crypto_verify/sodium/libsodium_la-verify.lo: crypto_verify/sodium/verify.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_verify/sodium/libsodium_la-verify.lo `test -f 'crypto_verify/sodium/verify.c' || echo '$(srcdir)/'`crypto_verify/sodium/verify.c
 
+crypto_vrf/libsodium_la-crypto_vrf.lo: crypto_vrf/crypto_vrf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/libsodium_la-crypto_vrf.lo -MD -MP -MF crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Tpo -c -o crypto_vrf/libsodium_la-crypto_vrf.lo `test -f 'crypto_vrf/crypto_vrf.c' || echo '$(srcdir)/'`crypto_vrf/crypto_vrf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Tpo crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/crypto_vrf.c' object='crypto_vrf/libsodium_la-crypto_vrf.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/libsodium_la-crypto_vrf.lo `test -f 'crypto_vrf/crypto_vrf.c' || echo '$(srcdir)/'`crypto_vrf/crypto_vrf.c
+
+crypto_vrf/ietfdraft03/libsodium_la-keypair.lo: crypto_vrf/ietfdraft03/keypair.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/ietfdraft03/libsodium_la-keypair.lo -MD -MP -MF crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Tpo -c -o crypto_vrf/ietfdraft03/libsodium_la-keypair.lo `test -f 'crypto_vrf/ietfdraft03/keypair.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/keypair.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Tpo crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/ietfdraft03/keypair.c' object='crypto_vrf/ietfdraft03/libsodium_la-keypair.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/ietfdraft03/libsodium_la-keypair.lo `test -f 'crypto_vrf/ietfdraft03/keypair.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/keypair.c
+
+crypto_vrf/ietfdraft03/libsodium_la-convert.lo: crypto_vrf/ietfdraft03/convert.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/ietfdraft03/libsodium_la-convert.lo -MD -MP -MF crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Tpo -c -o crypto_vrf/ietfdraft03/libsodium_la-convert.lo `test -f 'crypto_vrf/ietfdraft03/convert.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/convert.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Tpo crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/ietfdraft03/convert.c' object='crypto_vrf/ietfdraft03/libsodium_la-convert.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/ietfdraft03/libsodium_la-convert.lo `test -f 'crypto_vrf/ietfdraft03/convert.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/convert.c
+
+crypto_vrf/ietfdraft03/libsodium_la-prove.lo: crypto_vrf/ietfdraft03/prove.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/ietfdraft03/libsodium_la-prove.lo -MD -MP -MF crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Tpo -c -o crypto_vrf/ietfdraft03/libsodium_la-prove.lo `test -f 'crypto_vrf/ietfdraft03/prove.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/prove.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Tpo crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/ietfdraft03/prove.c' object='crypto_vrf/ietfdraft03/libsodium_la-prove.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/ietfdraft03/libsodium_la-prove.lo `test -f 'crypto_vrf/ietfdraft03/prove.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/prove.c
+
+crypto_vrf/ietfdraft03/libsodium_la-verify.lo: crypto_vrf/ietfdraft03/verify.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/ietfdraft03/libsodium_la-verify.lo -MD -MP -MF crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Tpo -c -o crypto_vrf/ietfdraft03/libsodium_la-verify.lo `test -f 'crypto_vrf/ietfdraft03/verify.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/verify.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Tpo crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/ietfdraft03/verify.c' object='crypto_vrf/ietfdraft03/libsodium_la-verify.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/ietfdraft03/libsodium_la-verify.lo `test -f 'crypto_vrf/ietfdraft03/verify.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/verify.c
+
+crypto_vrf/ietfdraft03/libsodium_la-vrf.lo: crypto_vrf/ietfdraft03/vrf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_vrf/ietfdraft03/libsodium_la-vrf.lo -MD -MP -MF crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Tpo -c -o crypto_vrf/ietfdraft03/libsodium_la-vrf.lo `test -f 'crypto_vrf/ietfdraft03/vrf.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/vrf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Tpo crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_vrf/ietfdraft03/vrf.c' object='crypto_vrf/ietfdraft03/libsodium_la-vrf.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_vrf/ietfdraft03/libsodium_la-vrf.lo `test -f 'crypto_vrf/ietfdraft03/vrf.c' || echo '$(srcdir)/'`crypto_vrf/ietfdraft03/vrf.c
+
 randombytes/libsodium_la-randombytes.lo: randombytes/randombytes.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT randombytes/libsodium_la-randombytes.lo -MD -MP -MF randombytes/$(DEPDIR)/libsodium_la-randombytes.Tpo -c -o randombytes/libsodium_la-randombytes.lo `test -f 'randombytes/randombytes.c' || echo '$(srcdir)/'`randombytes/randombytes.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) randombytes/$(DEPDIR)/libsodium_la-randombytes.Tpo randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
@@ -3061,6 +3164,8 @@ clean-libtool:
 	-rm -rf crypto_stream/xchacha20/.libs crypto_stream/xchacha20/_libs
 	-rm -rf crypto_stream/xsalsa20/.libs crypto_stream/xsalsa20/_libs
 	-rm -rf crypto_verify/sodium/.libs crypto_verify/sodium/_libs
+	-rm -rf crypto_vrf/.libs crypto_vrf/_libs
+	-rm -rf crypto_vrf/ietfdraft03/.libs crypto_vrf/ietfdraft03/_libs
 	-rm -rf randombytes/.libs randombytes/_libs
 	-rm -rf randombytes/nativeclient/.libs randombytes/nativeclient/_libs
 	-rm -rf randombytes/salsa20/.libs randombytes/salsa20/_libs
@@ -3412,6 +3517,10 @@ distclean-generic:
 	-rm -f crypto_stream/xsalsa20/$(am__dirstamp)
 	-rm -f crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_verify/sodium/$(am__dirstamp)
+	-rm -f crypto_vrf/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_vrf/$(am__dirstamp)
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_vrf/ietfdraft03/$(am__dirstamp)
 	-rm -f randombytes/$(DEPDIR)/$(am__dirstamp)
 	-rm -f randombytes/$(am__dirstamp)
 	-rm -f randombytes/nativeclient/$(DEPDIR)/$(am__dirstamp)
@@ -3530,6 +3639,12 @@ distclean: distclean-recursive
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/nativeclient/$(DEPDIR)/libsodium_la-randombytes_nativeclient.Plo
 	-rm -f randombytes/salsa20/$(DEPDIR)/librdrand_la-randombytes_salsa20_random.Plo
@@ -3682,6 +3797,12 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_vrf/$(DEPDIR)/libsodium_la-crypto_vrf.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-convert.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-keypair.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-prove.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_vrf/ietfdraft03/$(DEPDIR)/libsodium_la-vrf.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/nativeclient/$(DEPDIR)/libsodium_la-randombytes_nativeclient.Plo
 	-rm -f randombytes/salsa20/$(DEPDIR)/librdrand_la-randombytes_salsa20_random.Plo

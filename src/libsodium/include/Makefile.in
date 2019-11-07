@@ -166,6 +166,7 @@ am__nobase_include_HEADERS_DIST = sodium.h sodium/core.h \
 	sodium/crypto_stream_xchacha20.h \
 	sodium/crypto_stream_xsalsa20.h sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h sodium/crypto_verify_64.h \
+	sodium/crypto_vrf.h sodium/crypto_vrf_ietfdraft03.h \
 	sodium/export.h sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h sodium/runtime.h sodium/utils.h \
@@ -414,6 +415,7 @@ SODIUM_EXPORT = sodium.h sodium/core.h sodium/crypto_aead_aes256gcm.h \
 	sodium/crypto_stream_xchacha20.h \
 	sodium/crypto_stream_xsalsa20.h sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h sodium/crypto_verify_64.h \
+	sodium/crypto_vrf.h sodium/crypto_vrf_ietfdraft03.h \
 	sodium/export.h sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h sodium/runtime.h sodium/utils.h \

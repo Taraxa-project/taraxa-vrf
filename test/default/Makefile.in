@@ -151,7 +151,7 @@ am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_aes256gcm2$(EXEEXT) \
 	shorthash$(EXEEXT) sign$(EXEEXT) sodium_core$(EXEEXT) \
 	sodium_utils$(EXEEXT) sodium_version$(EXEEXT) stream$(EXEEXT) \
 	stream2$(EXEEXT) stream3$(EXEEXT) stream4$(EXEEXT) \
-	verify1$(EXEEXT) $(am__EXEEXT_1) $(am__EXEEXT_2)
+	verify1$(EXEEXT) vrf$(EXEEXT) $(am__EXEEXT_1) $(am__EXEEXT_2)
 aead_aes256gcm_SOURCES = aead_aes256gcm.c
 aead_aes256gcm_OBJECTS = aead_aes256gcm.$(OBJEXT)
 aead_aes256gcm_DEPENDENCIES = $(TESTS_LDADD)
@@ -378,6 +378,9 @@ stream4_DEPENDENCIES = $(TESTS_LDADD)
 verify1_SOURCES = verify1.c
 verify1_OBJECTS = verify1.$(OBJEXT)
 verify1_DEPENDENCIES = $(TESTS_LDADD)
+vrf_SOURCES = vrf.c
+vrf_OBJECTS = vrf.$(OBJEXT)
+vrf_DEPENDENCIES = $(TESTS_LDADD)
 xchacha20_SOURCES = xchacha20.c
 xchacha20_OBJECTS = xchacha20.$(OBJEXT)
 xchacha20_DEPENDENCIES = $(TESTS_LDADD)
@@ -432,7 +435,7 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aes256gcm.Po \
 	./$(DEPDIR)/sodium_version.Po ./$(DEPDIR)/stream.Po \
 	./$(DEPDIR)/stream2.Po ./$(DEPDIR)/stream3.Po \
 	./$(DEPDIR)/stream4.Po ./$(DEPDIR)/verify1.Po \
-	./$(DEPDIR)/xchacha20.Po
+	./$(DEPDIR)/vrf.Po ./$(DEPDIR)/xchacha20.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -468,7 +471,7 @@ SOURCES = aead_aes256gcm.c aead_aes256gcm2.c aead_chacha20poly1305.c \
 	secretstream.c shorthash.c sign.c siphashx24.c sodium_core.c \
 	sodium_utils.c sodium_utils2.c sodium_utils3.c \
 	sodium_version.c stream.c stream2.c stream3.c stream4.c \
-	verify1.c xchacha20.c
+	verify1.c vrf.c xchacha20.c
 DIST_SOURCES = aead_aes256gcm.c aead_aes256gcm2.c \
 	aead_chacha20poly1305.c aead_chacha20poly13052.c \
 	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
@@ -485,7 +488,7 @@ DIST_SOURCES = aead_aes256gcm.c aead_aes256gcm2.c \
 	secretbox_easy.c secretbox_easy2.c secretstream.c shorthash.c \
 	sign.c siphashx24.c sodium_core.c sodium_utils.c \
 	sodium_utils2.c sodium_utils3.c sodium_version.c stream.c \
-	stream2.c stream3.c stream4.c verify1.c xchacha20.c
+	stream2.c stream3.c stream4.c verify1.c vrf.c xchacha20.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -956,6 +959,7 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
+	vrf.exp \
 	xchacha20.exp
 
 DISTCLEANFILES = \
@@ -1034,6 +1038,7 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
+	vrf.res \
 	xchacha20.res
 
 @NATIVECLIENT_TRUE@CLEANFILES = \
@@ -1206,7 +1211,7 @@ TESTS_TARGETS = aead_aes256gcm aead_aes256gcm2 aead_chacha20poly1305 \
 	scalarmult6 scalarmult7 scalarmult8 secretbox secretbox2 \
 	secretbox7 secretbox8 secretbox_easy secretbox_easy2 \
 	secretstream shorthash sign sodium_core sodium_utils \
-	sodium_version stream stream2 stream3 stream4 verify1 \
+	sodium_version stream stream2 stream3 stream4 verify1 vrf \
 	$(am__append_1) $(am__append_2)
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
@@ -1359,6 +1364,8 @@ stream4_SOURCE = cmptest.h stream4.c
 stream4_LDADD = $(TESTS_LDADD)
 verify1_SOURCE = cmptest.h verify1.c
 verify1_LDADD = $(TESTS_LDADD)
+vrf_SOURCE = cmptest.h vrf.c
+vrf_LDADD = $(TESTS_LDADD)
 xchacha20_SOURCE = cmptest.h xchacha20.c
 xchacha20_LDADD = $(TESTS_LDADD)
 @NATIVECLIENT_TRUE@LOG_COMPILER = ./nacl-test-wrapper.sh
@@ -1701,6 +1708,10 @@ verify1$(EXEEXT): $(verify1_OBJECTS) $(verify1_DEPENDENCIES) $(EXTRA_verify1_DEP
 	@rm -f verify1$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(verify1_OBJECTS) $(verify1_LDADD) $(LIBS)
 
+vrf$(EXEEXT): $(vrf_OBJECTS) $(vrf_DEPENDENCIES) $(EXTRA_vrf_DEPENDENCIES) 
+	@rm -f vrf$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(vrf_OBJECTS) $(vrf_LDADD) $(LIBS)
+
 xchacha20$(EXEEXT): $(xchacha20_OBJECTS) $(xchacha20_DEPENDENCIES) $(EXTRA_xchacha20_DEPENDENCIES) 
 	@rm -f xchacha20$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(xchacha20_OBJECTS) $(xchacha20_LDADD) $(LIBS)
@@ -1785,6 +1796,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream3.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream4.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify1.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vrf.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xchacha20.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -2485,6 +2497,13 @@ verify1.log: verify1$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+vrf.log: vrf$(EXEEXT)
+	@p='vrf$(EXEEXT)'; \
+	b='vrf'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 sodium_utils2.log: sodium_utils2$(EXEEXT)
 	@p='sodium_utils2$(EXEEXT)'; \
 	b='sodium_utils2'; \
@@ -2710,6 +2729,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
+	-rm -f ./$(DEPDIR)/vrf.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -2830,6 +2850,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
+	-rm -f ./$(DEPDIR)/vrf.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
